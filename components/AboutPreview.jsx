@@ -62,60 +62,43 @@ export default function AboutPreview() {
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
-          <motion.div 
-            className="relative w-[340px] h-[460px] cursor-pointer"
-            initial="initial"
-            whileHover="hover"
-          >
+          <div className="relative w-[280px] h-[400px] md:w-[320px] md:h-[440px] cursor-pointer perspective-[1000px]">
             {[
-              // Card 1: -6 deg
-              { id: 1, src: "/gallery-1.png", initialRotate: -6, hoverRotate: -15, hoverX: -120, hoverY: 15, zIndex: 10 },
-              // Card 2: 3 deg
-              { id: 2, src: "/gallery-2.png", initialRotate: 3,  hoverRotate: -5,  hoverX: -40,  hoverY: -10, zIndex: 20 },
-              // Card 3: -2 deg
-              { id: 3, src: "/gallery-3.png", initialRotate: -2, hoverRotate: 5,   hoverX: 40,   hoverY: -10, zIndex: 30 },
-              // Card 4: 0 deg (straight, front)
-              { id: 4, src: "/gallery-4.png", initialRotate: 0,  hoverRotate: 15,  hoverX: 120,  hoverY: 15, zIndex: 40 },
+              { id: 1, src: "/gallery-1.png", defaultRotate: -15, defaultX: -130, defaultY: 30, zIndex: 10 },
+              { id: 2, src: "/gallery-2.png", defaultRotate: -5,  defaultX: -45,  defaultY: 0,  zIndex: 20 },
+              { id: 3, src: "/gallery-3.png", defaultRotate: 5,   defaultX: 45,   defaultY: 0,  zIndex: 30 },
+              { id: 4, src: "/gallery-4.png", defaultRotate: 15,  defaultX: 130,  defaultY: 30, zIndex: 40 },
             ].map((card) => (
               <motion.div
                 key={card.id}
-                className="absolute inset-0 w-full h-full rounded-sm border border-[rgba(201,168,76,0.6)] bg-[#111] overflow-hidden drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)]"
-                style={{ transformOrigin: "bottom center" }}
-                variants={{
-                  initial: { 
-                    rotate: card.initialRotate, 
-                    x: 0, 
-                    y: 0,
-                    zIndex: card.zIndex,
-                    scale: 1
-                  },
-                  hover: { 
-                    rotate: card.hoverRotate, 
-                    x: card.hoverX, 
-                    y: card.hoverY,
-                    zIndex: card.zIndex,
-                    scale: 1,
-                    transition: { duration: 0.5, ease: "easeOut" }
-                  }
+                className="absolute inset-0 w-full h-full rounded-[4px] border-[1px] border-[rgba(201,168,76,0.3)] bg-[#080808] overflow-hidden drop-shadow-[0_25px_25px_rgba(0,0,0,0.9)] origin-bottom"
+                initial={{ 
+                  rotate: card.defaultRotate, 
+                  x: card.defaultX, 
+                  y: card.defaultY,
+                  zIndex: card.zIndex,
+                  scale: 1
                 }}
                 whileHover={{
                   scale: 1.08,
-                  rotate: 0,
-                  y: card.hoverY - 30, // lift it up higher
-                  zIndex: 50, // pop to front
-                  transition: { duration: 0.3, ease: "easeOut" }
+                  rotate: card.defaultRotate * 0.2, // slightly straighten out, but not fully stiff
+                  y: card.defaultY - 40,
+                  zIndex: 50,
+                  transition: { duration: 0.4, ease: [0.25, 1, 0.5, 1] } // smooth ease out
                 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
               >
-                {/* Replace these with your real images in the /public folder */}
                 <Image 
                   src={card.src}
                   alt={`Vistaar Card ${card.id}`}
                   fill
-                  className="object-cover opacity-90"
+                  className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 />
+                {/* A subtle overlay to enhance depth when not hovered */}
+                <div className="absolute inset-0 bg-black/20 hover:bg-transparent transition-colors duration-500" />
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </motion.div>
 
       </div>

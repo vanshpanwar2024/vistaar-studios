@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -13,6 +14,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -62,18 +64,21 @@ export default function Navbar() {
 
           {/* Center Links (Desktop) */}
           <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href}
-                className="group relative font-body font-[300] text-sm tracking-[3px] text-off-white hover:text-white transition-colors"
-              >
-                {link.name}
-                <motion.span 
-                  className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gold group-hover:w-full transition-all duration-300 origin-left"
-                />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href && link.href !== '/';
+              return (
+                <Link 
+                  key={link.name} 
+                  href={link.href}
+                  className="group relative font-body font-[300] text-sm tracking-[3px] text-off-white hover:text-white transition-colors"
+                >
+                  {link.name}
+                  <motion.span 
+                    className={`absolute -bottom-1 left-0 h-[1px] bg-gold transition-all duration-300 origin-left ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right CTA / Mobile Toggle */}
