@@ -50,7 +50,7 @@ export default function Footer() {
               ))}
             </div>
             <div className="flex flex-wrap justify-center gap-[32px]">
-              {['Marketplace', 'Register Now'].map((item) => (
+              {['Collaborate', 'Register Now'].map((item) => (
                 <Link 
                   key={item} 
                   href={item === 'Register Now' ? '/register' : `/${item.toLowerCase().replace(' ', '')}`}

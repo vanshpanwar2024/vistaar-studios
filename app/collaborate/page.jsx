@@ -1,8 +1,19 @@
 "use client";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 export default function JoinUs() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [hasReadBrochure, setHasReadBrochure] = useState(false);
+
+  const openModal = (roleTitle) => {
+    setSelectedRole(roleTitle);
+    setHasReadBrochure(false);
+    setIsModalOpen(true);
+  };
+
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -25,6 +36,19 @@ export default function JoinUs() {
       y: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },
+  };
+
+  const getBrochureFile = (role) => {
+    // Map the selected role to its specific PDF filename
+    switch (role) {
+      case 'Studio Partners': return '/brochures/studio-partners.pdf';
+      case 'Models': return '/brochures/models.pdf';
+      case 'Photographers & Videographers': return '/brochures/photographers.pdf';
+      case 'Artists & Performers': return '/brochures/artists.pdf';
+      case 'Makeup Artists': return '/brochures/makeup-artists.pdf';
+      case 'Sponsors & Brands': return '/brochures/sponsors.pdf';
+      default: return '#';
+    }
   };
 
   return (
@@ -117,7 +141,7 @@ export default function JoinUs() {
                 key={card.num}
                 variants={itemVariants}
                 className="group relative bg-[#111111] border border-[rgba(201,168,76,0.08)] p-[48px] px-[40px] cursor-pointer transition-all duration-500 hover:-translate-y-[6px] hover:border-[rgba(201,168,76,0.4)] overflow-hidden"
-                onClick={() => scrollToSection(card.target)}
+                onClick={() => openModal(card.title)}
               >
                 {/* Image Background Fill replacing large number */}
                 <div className="absolute inset-0 z-0 opacity-40 group-hover:opacity-70 transition-opacity duration-500">
@@ -202,6 +226,135 @@ export default function JoinUs() {
           </div>
         </motion.div>
       </section>
+
+      {/* MODAL */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div 
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="bg-[#0e0e0e] border border-[rgba(201,168,76,0.15)] p-[32px] md:p-[48px] w-full max-w-[500px] relative max-h-[90vh] overflow-y-auto"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.95 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="absolute top-6 right-6 text-off-white-dim hover:text-gold transition-colors font-body text-xl"
+              >
+                ✕
+              </button>
+
+              <h3 className="font-display text-[28px] text-off-white mb-2">Apply as <span className="text-gold italic">{selectedRole}</span></h3>
+              <p className="font-body text-[10px] text-off-white-dim mb-6">Fill in your details to directly contact our team.</p>
+
+              <form className="flex flex-col gap-[16px]" onSubmit={(e) => { e.preventDefault(); setIsModalOpen(false); }}>
+                
+                {/* Freezed Role Input */}
+                <div className="flex flex-col gap-2">
+                  <span className="font-body text-[9px] text-gold tracking-widest uppercase">Applying For</span>
+                  <input 
+                    type="text" 
+                    value={selectedRole}
+                    disabled
+                    className="w-full bg-[#111111] border border-[rgba(201,168,76,0.3)] text-off-white-dim font-body text-[12px] p-[14px_18px] opacity-70 cursor-not-allowed"
+                  />
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-[16px]">
+                  <input 
+                    type="text" 
+                    placeholder="Your Name" 
+                    className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
+                    required
+                  />
+                  <input 
+                    type="tel" 
+                    placeholder="Phone Number" 
+                    className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
+                    required
+                  />
+                </div>
+
+                <input 
+                  type="email" 
+                  placeholder="Email Address" 
+                  className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
+                  required
+                />
+
+                {/* Conditional Portfolio Link */}
+                {!['Studio Partners', 'Sponsors & Brands'].includes(selectedRole) && (
+                  <input 
+                    type="url" 
+                    placeholder="Portfolio / Instagram Link" 
+                    className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
+                    required
+                  />
+                )}
+
+                <textarea 
+                  rows="4" 
+                  placeholder="Tell us about yourself or your work..." 
+                  className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] resize-none focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
+                  required
+                ></textarea>
+
+                {/* Brochure and Checkbox */}
+                <div className="flex flex-col gap-4 mt-2 p-4 border border-[rgba(201,168,76,0.08)] bg-[#0a0a0a]">
+                  <a 
+                    href={getBrochureFile(selectedRole)}
+                    download 
+                    className="inline-flex items-center justify-center gap-2 border border-gold bg-[rgba(201,168,76,0.05)] text-gold font-body text-[10px] tracking-[2px] uppercase p-[12px] hover:bg-gold hover:text-black-deep transition-all duration-300"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Download Brochure
+                  </a>
+
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <div className="relative flex items-center justify-center mt-0.5">
+                      <input 
+                        type="checkbox" 
+                        className="appearance-none w-4 h-4 border border-[rgba(201,168,76,0.4)] bg-[#111] checked:bg-gold checked:border-gold transition-all cursor-pointer"
+                        checked={hasReadBrochure}
+                        onChange={(e) => setHasReadBrochure(e.target.checked)}
+                      />
+                      {hasReadBrochure && (
+                        <svg className="w-3 h-3 absolute text-black-deep pointer-events-none" viewBox="0 0 14 10" fill="none">
+                          <path d="M1 5L4.5 8.5L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </div>
+                    <span className="font-body text-[10px] text-off-white-dim group-hover:text-off-white transition-colors leading-relaxed">
+                      I have explicitly read and understood the details in the brochure attached above.
+                    </span>
+                  </label>
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={!hasReadBrochure}
+                  className={`w-full font-body text-[10px] tracking-[3px] uppercase mt-2 p-[18px] transition-all duration-300 font-semibold
+                    ${hasReadBrochure 
+                      ? "bg-gold text-[#000000] hover:bg-[#b0923d] cursor-pointer" 
+                      : "bg-[#222] text-gray-500 cursor-not-allowed border border-[#333]"}`}
+                >
+                  Send Message
+                </button>
+
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </main>
   );

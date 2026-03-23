@@ -17,7 +17,7 @@ const navLinks = [
     ]
   },
   { name: "Services", href: "/services" },
-  { name: "Collaborate", href: "/join-us" },
+  { name: "Collaborate", href: "/collaborate" },
 ];
 
 export default function Navbar() {
