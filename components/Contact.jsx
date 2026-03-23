@@ -128,7 +128,7 @@ export default function Contact() {
 
         {/* Trust Signals */}
         <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mb-16 text-center">
-          <span className="font-body text-[10px] text-gold uppercase tracking-[2px]">✦ 50+ Studio Partners Across Delhi NCR</span>
+          <span className="font-body text-[10px] text-gold uppercase tracking-[2px]">✦ 50+ Studio Partners Across India</span>
           <span className="font-body text-[10px] text-gold uppercase tracking-[2px]">✦ 300+ Participants Per Event</span>
           <span className="font-body text-[10px] text-gold uppercase tracking-[2px]">✦ Pan India Vision 2026</span>
         </motion.div>

@@ -8,9 +8,16 @@ import { motion, AnimatePresence } from "framer-motion";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
-  { name: "Events", href: "/events" },
+  { 
+    name: "Events", 
+    href: "/events",
+    dropdown: [
+      { name: "Upcoming Events", href: "/events/upcoming" },
+      { name: "Previous Events", href: "/events/previous" }
+    ]
+  },
   { name: "Services", href: "/services" },
-  { name: "Contact", href: "/contact" },
+  { name: "Collaborate", href: "/join-us" },
 ];
 
 export default function Navbar() {
@@ -66,15 +73,47 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => {
               const isActive = pathname === link.href && link.href !== '/';
+              
+              if (link.dropdown) {
+                return (
+                  <div key={link.name} className="group relative py-6">
+                    <span 
+                      className="cursor-pointer relative font-body font-[300] text-sm tracking-[3px] text-off-white hover:text-white transition-colors"
+                    >
+                      {link.name}
+                      <motion.span 
+                        className={`absolute -bottom-1 left-0 h-[1px] bg-gold transition-all duration-300 origin-left ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                      />
+                    </span>
+
+                    {/* Dropdown Menu */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <div className="bg-[#0b0b0b] border border-[rgba(201,168,76,0.2)] p-5 flex flex-col gap-5 min-w-[200px] shadow-2xl relative">
+                        <div className="absolute -top-[5px] left-1/2 -translate-x-1/2 w-2 h-2 bg-[#0b0b0b] border-t border-l border-[rgba(201,168,76,0.2)] rotate-45" />
+                        {link.dropdown.map((dropdownItem) => (
+                          <Link
+                            key={dropdownItem.name}
+                            href={dropdownItem.href}
+                            className="font-body font-[300] text-[11px] tracking-[2px] uppercase text-off-white-dim hover:text-gold transition-colors text-center"
+                          >
+                            {dropdownItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link 
                   key={link.name} 
                   href={link.href}
-                  className="group relative font-body font-[300] text-sm tracking-[3px] text-off-white hover:text-white transition-colors"
+                  className="group relative font-body font-[300] text-sm tracking-[3px] text-off-white hover:text-white transition-colors py-6"
                 >
                   {link.name}
                   <motion.span 
-                    className={`absolute -bottom-1 left-0 h-[1px] bg-gold transition-all duration-300 origin-left ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                    className={`absolute bottom-[23px] left-0 h-[1px] bg-gold transition-all duration-300 origin-left ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}
                   />
                 </Link>
               );
@@ -128,13 +167,33 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 + 0.3 }}
                 >
-                  <Link 
-                    href={link.href}
-                    className="font-display text-4xl text-off-white hover:text-gold transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
+                  {link.dropdown ? (
+                    <div className="flex flex-col items-center">
+                      <span className="font-display text-4xl text-off-white mb-5">
+                        {link.name}
+                      </span>
+                      <div className="flex flex-col space-y-5 border-l border-gold/30 pl-4 py-1">
+                        {link.dropdown.map((d) => (
+                          <Link
+                            key={d.name}
+                            href={d.href}
+                            className="font-body text-xs tracking-[3px] text-off-white-dim uppercase hover:text-gold transition-colors text-left"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {d.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link 
+                      href={link.href}
+                      className="font-display text-4xl text-off-white hover:text-gold transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
               <motion.div
