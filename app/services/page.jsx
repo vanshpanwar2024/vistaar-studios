@@ -175,7 +175,7 @@ export default function Services() {
               <div className="h-[1px] w-[48px] bg-gold my-[24px]" />
               
               <p className="font-body text-[12px] text-[rgba(255,255,255,0.7)] leading-[2.2] mb-8">
-                Talent alone is not enough. The performers who make it to the national stage are the ones who never stop refining their craft. Our curated workshop program brings together Delhi NCR's finest coaches, choreographers, stylists, and industry professionals for intensive sessions designed to prepare you for the big stage. From ramp walk technique and stage presence to contemporary choreography and grooming — we cover every dimension of a performer's development.
+                Talent alone is not enough. The performers who make it to the national stage are the ones who never stop refining their craft. Our curated workshop program brings together Delhi NCR&apos;s finest coaches, choreographers, stylists, and industry professionals for intensive sessions designed to prepare you for the big stage. From ramp walk technique and stage presence to contemporary choreography and grooming — we cover every dimension of a performer&apos;s development.
               </p>
 
               {/* Four Pills Container */}
