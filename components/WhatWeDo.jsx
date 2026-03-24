@@ -220,6 +220,7 @@ export default function WhatWeDo() {
                     {card.description}
                   </p>
                 </div>
+              </div>
 
               {/* Animated Bottom Line */}
               <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gold scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-30" />
