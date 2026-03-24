@@ -214,20 +214,12 @@ export default function WhatWeDo() {
                   {card.title}
                 </h3>
                 
-                {/* Description wrap is fixed height to push explore strictly down */}
+                {/* Description wrap is fixed height */}
                 <div className="h-[80px] overflow-hidden mb-2">
                   <p className="font-body text-[11px] leading-[2] text-[rgba(245,240,232,0.8)] tracking-[0.5px] drop-shadow-md opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
                     {card.description}
                   </p>
                 </div>
-
-                {/* Bottom Link */}
-                <div>
-                  <span className="font-body text-[9px] uppercase tracking-[4px] text-gold drop-shadow-md">
-                    Explore &rarr;
-                  </span>
-                </div>
-              </div>
 
               {/* Animated Bottom Line */}
               <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gold scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-30" />
