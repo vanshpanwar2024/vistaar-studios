@@ -138,11 +138,6 @@ export default function EventsPreview() {
                         <div className="flex items-center gap-1.5">
                            <span className="text-gold">📍</span> <span className="truncate max-w-[120px]">{event.location}</span>
                         </div>
-                        {event.preliminary_fee && (
-                          <div className="flex items-center gap-1.5">
-                             <span className="text-gold">🎟️</span> {event.preliminary_fee}
-                          </div>
-                        )}
                     </div>
 
                     <Link href={`/events/${event.id}`} className="inline-block border-b border-gold text-gold font-body text-[9px] uppercase tracking-[2px] pb-1 w-max hover:text-white hover:border-white transition-all duration-300">
