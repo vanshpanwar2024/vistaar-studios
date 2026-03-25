@@ -96,12 +96,6 @@ export default function UpcomingEvents() {
             <p className="font-body text-[14px] md:text-[16px] text-off-white-dim uppercase tracking-[3px] mb-8">
               No upcoming events announced yet.
             </p>
-             <Link 
-              href="/contact" 
-              className="border border-gold text-gold font-body text-[10px] uppercase tracking-widest py-3 px-8 hover:bg-gold hover:text-black-deep transition-all duration-300"
-            >
-              Contact Us for Enquiries
-            </Link>
           </motion.div>
         ) : (
           <div className="flex flex-col gap-12 max-w-5xl mx-auto">
