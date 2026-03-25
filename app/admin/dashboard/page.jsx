@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 
 export default function AdminDashboard() {
@@ -338,7 +339,15 @@ export default function AdminDashboard() {
               {isUploading && <p className="text-gold text-[10px] mt-2 font-body">Uploading...</p>}
               {formData.image_url && (
                 <div className="mt-4 border border-[rgba(201,168,76,0.3)] inline-block p-1">
-                  <img src={formData.image_url} alt="Preview" className="w-[200px] h-auto object-cover" />
+                  <div className="relative w-[200px] h-[150px]">
+                    <Image 
+                      src={formData.image_url} 
+                      alt="Preview" 
+                      fill 
+                      sizes="200px"
+                      className="object-cover" 
+                    />
+                  </div>
                 </div>
               )}
             </div>

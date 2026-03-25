@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 
 // CountUp Component for Section 6 stats
 const CountUp = ({ end, duration = 2 }) => {
@@ -126,7 +127,12 @@ export default function About() {
           <motion.div variants={itemVariants} className="relative w-full md:w-[400px] aspect-[4/5] bg-[#111] border border-[rgba(201,168,76,0.5)] order-1 md:order-2 flex items-center justify-center shrink-0">
              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-gold -translate-x-[1px] -translate-y-[1px] z-20" />
              <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-gold translate-x-[1px] translate-y-[1px] z-20" />
-             <img src="/about-1.jpg" alt="Where It Began" className="absolute inset-0 object-cover w-full h-full opacity-80" />
+             <Image 
+               src="/about-1.jpg" 
+               alt="Where It Began" 
+               fill
+               className="object-cover opacity-80" 
+             />
           </motion.div>
         </motion.div>
       </section>
@@ -143,7 +149,12 @@ export default function About() {
           <motion.div variants={itemVariants} className="relative w-full md:w-[400px] aspect-[4/5] bg-[#111] border border-[rgba(201,168,76,0.5)] flex items-center justify-center shrink-0">
              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-gold -translate-x-[1px] -translate-y-[1px] z-20" />
              <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-gold translate-x-[1px] translate-y-[1px] z-20" />
-             <img src="/about-2.jpg" alt="What Vistaar Means" className="absolute inset-0 object-cover w-full h-full opacity-80" />
+             <Image 
+               src="/about-2.jpg" 
+               alt="What Vistaar Means" 
+               fill
+               className="object-cover opacity-80" 
+             />
           </motion.div>
 
           <motion.div variants={itemVariants} className="relative flex flex-col justify-center flex-1">
