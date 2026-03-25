@@ -56,7 +56,7 @@ export default function AboutPreview() {
 
         {/* Right: Stacked Fanned Cards */}
         <motion.div 
-          className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center order-1 md:order-2"
+          className="relative h-[60vh] md:h-[80vh] w-full hidden md:flex items-center justify-center order-1 md:order-2"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
