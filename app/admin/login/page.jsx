@@ -7,20 +7,29 @@ import { supabase } from "@/lib/supabase";
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      setError(true);
-    } else {
-      router.refresh();
-      router.push("/admin/dashboard");
+    setError(""); // clear previous errors
+    
+    try {
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        console.error("Login error:", authError);
+        setError(authError.message || "An error occurred during login");
+      } else {
+        router.refresh();
+        router.push("/admin/dashboard");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setError("Network error: Please check your connection or configuration.");
     }
   };
 
@@ -74,9 +83,11 @@ export default function AdminLogin() {
         </form>
 
         {error && (
-          <p className="font-body text-[10px] text-[rgba(255,100,100,0.8)] mt-4">
-            Invalid credentials. Please try again.
-          </p>
+          <div className="mt-4 w-full bg-red-900/20 border border-red-500/30 p-2 flex items-center justify-center">
+            <p className="font-body text-[10px] text-red-400 tracking-wide text-center">
+              {error}
+            </p>
+          </div>
         )}
       </div>
     </main>
