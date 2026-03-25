@@ -2,9 +2,77 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FAQ_DATA } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
 
 export default function Contact() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    countryCode: "+91",
+    phone: "",
+    role: "Participant",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      countryCode: "+91",
+      phone: "",
+      role: "Participant",
+      message: ""
+    });
+    setSubmitStatus(null);
+  };
+
+  const handleOpenModal = () => {
+    resetForm();
+    setIsModalOpen(true);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    const fullPhone = `${formData.countryCode} ${formData.phone}`;
+
+    try {
+      const { error } = await supabase
+        .from('direct_messages')
+        .insert([{
+          name: formData.name,
+          phone: fullPhone,
+          role: formData.role,
+          message: formData.message
+        }]);
+
+      if (error) throw error;
+
+      setSubmitStatus('success');
+      
+      setTimeout(() => {
+        setIsModalOpen(false);
+        resetForm();
+      }, 2000);
+
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -85,7 +153,7 @@ export default function Contact() {
         <motion.div variants={itemVariants} className="mb-24 flex flex-col items-center">
             <p className="font-body text-[11px] text-off-white-dim mb-4 tracking-[1px]">Still have questions?</p>
             <button 
-              onClick={() => setIsModalOpen(true)}
+              onClick={handleOpenModal}
               className="px-10 py-4 bg-transparent border border-gold text-gold font-body text-[10px] uppercase tracking-[4px] font-semibold hover:bg-gold hover:text-black-deep transition-all duration-300"
             >
               Need Further Assistance
@@ -135,24 +203,30 @@ export default function Contact() {
                  <span className="font-display italic text-gold text-xl">Direct Message</span>
               </div>
 
-              <form className="flex flex-col gap-6 mt-4">
+              <form className="flex flex-col gap-6 mt-4" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col">
                     <label className="font-body text-[10px] uppercase tracking-[2px] text-off-white-dim mb-2 ml-1">Full Name</label>
                     <input 
                       type="text" 
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       className="bg-black border border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-full"
                       placeholder="Your Name"
                       pattern="^[a-zA-Z0-9\s]+$"
                       onInput={(e) => e.target.value = e.target.value.replace(/[^a-zA-Z0-9\s]/g, '')}
+                      required
                     />
                   </div>
                   <div className="flex flex-col">
                     <label className="font-body text-[10px] uppercase tracking-[2px] text-off-white-dim mb-2 ml-1">Phone Number</label>
                     <div className="flex">
                       <select 
+                        name="countryCode"
+                        value={formData.countryCode}
+                        onChange={handleChange}
                         className="bg-black border border-r-0 border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-[110px] appearance-none cursor-pointer"
-                        defaultValue="+91"
                       >
                         <option value="+91">🇮🇳 +91</option>
                         <option value="+1">🇺🇸 +1</option>
@@ -178,10 +252,14 @@ export default function Contact() {
                         <option value="+64">🇳🇿 +64</option>
                       </select>
                       <input 
-                        type="tel" 
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange} 
                         className="bg-black border border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-full"
                         placeholder="Phone Number"
                         onInput={(e) => e.target.value = e.target.value.replace(/[^0-9]/g, '')}
+                        required
                       />
                     </div>
                   </div>
@@ -189,11 +267,16 @@ export default function Contact() {
 
                 <div className="flex flex-col">
                   <label className="font-body text-[10px] uppercase tracking-[2px] text-off-white-dim mb-2 ml-1">I am a...</label>
-                  <select className="bg-black border border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-full appearance-none cursor-pointer">
-                    <option value="participant">Participant</option>
-                    <option value="studio">Studio Owner</option>
-                    <option value="sponsor">Sponsor</option>
-                    <option value="other">Other</option>
+                  <select 
+                    name="role"
+                    value={formData.role}
+                    onChange={handleChange}
+                    className="bg-black border border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-full appearance-none cursor-pointer"
+                  >
+                    <option value="Participant">Participant</option>
+                    <option value="Studio Owner">Studio Owner</option>
+                    <option value="Sponsor">Sponsor</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
@@ -201,17 +284,24 @@ export default function Contact() {
                   <label className="font-body text-[10px] uppercase tracking-[2px] text-off-white-dim mb-2 ml-1">Message</label>
                   <textarea 
                     rows="4"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     className="bg-black border border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-full resize-none"
                     placeholder="Tell us about your inquiry..."
+                    required
                   ></textarea>
                 </div>
 
                 <button 
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="mt-4 w-full bg-gold text-black-deep font-body text-[10px] font-bold uppercase tracking-[4px] py-5 hover:bg-off-white transition-colors duration-300 shadow-[0_0_15px_rgba(201,168,76,0.2)] hover:shadow-[0_0_25px_rgba(245,240,232,0.4)]"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`mt-4 w-full font-body text-[10px] font-bold uppercase tracking-[4px] py-5 transition-colors duration-300 shadow-[0_0_15px_rgba(201,168,76,0.2)] hover:shadow-[0_0_25px_rgba(245,240,232,0.4)]
+                    ${isSubmitting 
+                      ? "bg-[#222] text-gray-500 cursor-wait border border-[#333]" 
+                      : "bg-gold text-black-deep hover:bg-off-white cursor-pointer"}`}
                 >
-                  Send Message
+                  {isSubmitting ? "Sending..." : submitStatus === "success" ? "Sent Successfully" : submitStatus === "error" ? "Error Sending" : "Send Message"}
                 </button>
               </form>
             </motion.div>

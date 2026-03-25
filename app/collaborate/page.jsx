@@ -2,16 +2,94 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { supabase } from "../../lib/supabase";
 
 export default function JoinUs() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [hasReadBrochure, setHasReadBrochure] = useState(false);
+  
+  // Form State
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    portfolio: "",
+    details: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
 
   const openModal = (roleTitle) => {
     setSelectedRole(roleTitle);
     setHasReadBrochure(false);
     setIsModalOpen(true);
+    setSubmitStatus(null);
+    setFormData({ name: "", phone: "", email: "", portfolio: "", details: "" });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    let tableName = "";
+    // Map roles to table names
+    switch (selectedRole) {
+      case 'Studio Partners': tableName = 'studio_partners'; break;
+      case 'Models': tableName = 'models'; break;
+      case 'Photographers & Videographers': tableName = 'photographers_videographers'; break;
+      case 'Artists & Performers': tableName = 'artists_performers'; break;
+      case 'Makeup Artists': tableName = 'makeup_artists'; break;
+      case 'Sponsors & Brands': tableName = 'sponsors_brands'; break;
+      default: 
+        console.error("Unknown role");
+        setIsSubmitting(false);
+        return;
+    }
+
+    const dataToInsert = {
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      details: formData.details,
+    };
+
+    // Add portfolio link only if applicable
+    if (!['Studio Partners', 'Sponsors & Brands'].includes(selectedRole)) {
+        dataToInsert.portfolio_link = formData.portfolio;
+    }
+
+    try {
+        const { error } = await supabase
+            .from(tableName)
+            .insert([dataToInsert]);
+
+        if (error) throw error;
+
+        setSubmitStatus('success');
+        
+        // Close modal after success
+        setTimeout(() => {
+            setIsModalOpen(false);
+            setSubmitStatus(null);
+            setFormData({ name: "", phone: "", email: "", portfolio: "", details: "" });
+        }, 2000);
+
+    } catch (error) {
+        console.error("Error submitting form:", error);
+        setSubmitStatus('error');
+    } finally {
+        setIsSubmitting(false);
+    }
   };
 
   const scrollToSection = (id) => {
@@ -254,7 +332,7 @@ export default function JoinUs() {
               <h3 className="font-display text-[28px] text-off-white mb-2">Apply as <span className="text-gold italic">{selectedRole}</span></h3>
               <p className="font-body text-[10px] text-off-white-dim mb-6">Fill in your details to directly contact our team.</p>
 
-              <form className="flex flex-col gap-[16px]" onSubmit={(e) => { e.preventDefault(); setIsModalOpen(false); }}>
+              <form className="flex flex-col gap-[16px]" onSubmit={handleSubmit}>
                 
                 {/* Freezed Role Input */}
                 <div className="flex flex-col gap-2">
@@ -271,12 +349,18 @@ export default function JoinUs() {
                   <input 
                     type="text" 
                     placeholder="Your Name" 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
                     required
                   />
                   <input 
                     type="tel" 
                     placeholder="Phone Number" 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                     className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
                     required
                   />
@@ -285,6 +369,9 @@ export default function JoinUs() {
                 <input 
                   type="email" 
                   placeholder="Email Address" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
                   required
                 />
@@ -294,6 +381,9 @@ export default function JoinUs() {
                   <input 
                     type="url" 
                     placeholder="Portfolio / Instagram Link" 
+                    name="portfolio"
+                    value={formData.portfolio}
+                    onChange={handleChange}
                     className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
                     required
                   />
@@ -302,6 +392,9 @@ export default function JoinUs() {
                 <textarea 
                   rows="4" 
                   placeholder="Tell us about yourself or your work..." 
+                  name="details"
+                  value={formData.details}
+                  onChange={handleChange}
                   className="w-full bg-[#111111] border border-[rgba(201,168,76,0.15)] text-off-white placeholder-[rgba(245,240,232,0.3)] font-body text-[12px] p-[14px_18px] resize-none focus:outline-none focus:border-[rgba(201,168,76,0.6)] focus:ring-1 focus:ring-[rgba(201,168,76,0.6)] transition-all duration-300"
                   required
                 ></textarea>
@@ -341,13 +434,13 @@ export default function JoinUs() {
 
                 <button 
                   type="submit" 
-                  disabled={!hasReadBrochure}
+                  disabled={!hasReadBrochure || isSubmitting}
                   className={`w-full font-body text-[10px] tracking-[3px] uppercase mt-2 p-[18px] transition-all duration-300 font-semibold
-                    ${hasReadBrochure 
-                      ? "bg-gold text-[#000000] hover:bg-[#b0923d] cursor-pointer" 
-                      : "bg-[#222] text-gray-500 cursor-not-allowed border border-[#333]"}`}
+                    ${!hasReadBrochure || isSubmitting
+                      ? "bg-[#222] text-gray-500 cursor-not-allowed border border-[#333]" 
+                      : "bg-gold text-[#000000] hover:bg-[#b0923d] cursor-pointer"}`}
                 >
-                  Send Message
+                  {isSubmitting ? "Sending..." : submitStatus === "success" ? "Sent Successfully" : submitStatus === "error" ? "Error Sending" : "Send Message"}
                 </button>
 
               </form>
