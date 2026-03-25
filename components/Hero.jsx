@@ -33,24 +33,24 @@ export default function Hero() {
       />
 
       {/* Hero Content */}
-      <div className="flex flex-col items-center justify-center text-center z-10 px-6 max-w-4xl mx-auto mt-20 md:mt-0">
+      <div className="flex flex-col items-center justify-center text-center z-10 px-4 md:px-6 w-full max-w-4xl mx-auto mt-0">
         
         {/* Eyebrow */}
         <motion.div 
-          className="flex items-center space-x-4 mb-6"
+          className="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-6"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <span className="text-[10px] md:text-xs text-gold font-body uppercase tracking-[0.3em]">
+          <span className="text-[9px] md:text-xs text-gold font-body uppercase tracking-[0.2em] md:tracking-[0.3em]">
             India&apos;s Premier Talent Platform
           </span>
         </motion.div>
 
         {/* Main Headings */}
-        <div className="flex flex-col items-center mb-6 leading-none cursor-default">
+        <div className="flex flex-col items-center mb-4 md:mb-6 leading-none cursor-default w-full">
           <motion.h1 
-            className="font-display font-[300] text-[clamp(64px,10vw,120px)] text-off-white relative whitespace-nowrap"
+            className="font-display font-[300] text-[clamp(48px,12vw,120px)] text-off-white relative whitespace-nowrap"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
@@ -59,7 +59,7 @@ export default function Hero() {
           </motion.h1>
 
           <motion.h2 
-            className="font-display font-[300] text-[clamp(64px,10vw,120px)] text-off-white relative mt-[-10px] md:mt-[-20px] whitespace-nowrap"
+            className="font-display font-[300] text-[clamp(48px,12vw,120px)] text-off-white relative mt-[-5px] md:mt-[-20px] whitespace-nowrap"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
@@ -70,7 +70,7 @@ export default function Hero() {
 
         {/* Description */}
         <motion.p 
-          className="text-off-white-dim font-body text-[11px] tracking-[2px] max-w-[440px] mx-auto text-center mb-10 leading-relaxed"
+          className="text-off-white-dim font-body text-[10px] md:text-[11px] tracking-[1.5px] md:tracking-[2px] max-w-[90%] md:max-w-[440px] mx-auto text-center mb-8 md:mb-10 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
@@ -81,19 +81,19 @@ export default function Hero() {
 
         {/* CTAs */}
         <motion.div 
-          className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 pointer-events-auto"
+          className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 pointer-events-auto w-full sm:w-auto px-6 sm:px-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.1 }}
         >
-          <a href="/events" className="group relative px-6 py-3 bg-gold border border-gold overflow-hidden transition-all duration-300">
-            <span className="relative z-10 font-body text-[9px] uppercase tracking-[4px] text-black-deep group-hover:text-off-white transition-colors duration-300">
+          <a href="/events" className="group relative w-full sm:w-auto min-w-[160px] text-center px-6 py-3 bg-gold border border-gold overflow-hidden transition-all duration-300">
+            <span className="relative z-10 font-body text-[9px] uppercase tracking-[3px] md:tracking-[4px] text-black-deep group-hover:text-off-white transition-colors duration-300">
               Explore Events
             </span>
             <div className="absolute inset-0 bg-black-deep transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out z-[0]" />
           </a>
-          <a href="/about" className="group relative px-6 py-3 border border-off-white overflow-hidden transition-all duration-300">
-            <span className="relative z-10 font-body text-[9px] uppercase tracking-[4px] text-off-white group-hover:text-black-deep transition-colors duration-300">
+          <a href="/about" className="group relative w-full sm:w-auto min-w-[160px] text-center px-6 py-3 border border-off-white overflow-hidden transition-all duration-300">
+            <span className="relative z-10 font-body text-[9px] uppercase tracking-[3px] md:tracking-[4px] text-off-white group-hover:text-black-deep transition-colors duration-300">
               Our Story
             </span>
             <div className="absolute inset-0 bg-off-white transform scale-x-0 origin-right group-hover:scale-x-100 transition-transform duration-300 ease-out z-[0]" />

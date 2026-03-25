@@ -107,15 +107,15 @@ export default function WhatWeDo() {
   };
 
   return (
-    <section className="bg-black-deep py-[60px] pb-32 relative z-10 w-full overflow-hidden">
+    <section className="bg-black-deep py-20 pb-32 relative z-10 w-full overflow-hidden">
       
       {/* Section Header */}
-      <div className="flex items-center justify-center space-x-4 mb-[48px]">
-        <div className="w-12 h-[1px] bg-gold opacity-50" />
-        <span className="text-[10px] text-gold font-body uppercase tracking-[0.3em]">
+      <div className="flex items-center justify-center space-x-4 mb-10 md:mb-[48px]">
+        <div className="w-8 md:w-12 h-[1px] bg-gold opacity-50" />
+        <span className="text-[9px] md:text-[10px] text-gold font-body uppercase tracking-[0.3em]">
           What We Do
         </span>
-        <div className="w-12 h-[1px] bg-gold opacity-50" />
+        <div className="w-8 md:w-12 h-[1px] bg-gold opacity-50" />
       </div>
 
       {/* Cards Container */}
@@ -128,7 +128,7 @@ export default function WhatWeDo() {
       >
         <div 
           ref={scrollRef}
-          className={`flex gap-[24px] overflow-x-hidden w-full select-none px-10 py-4 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+          className={`flex gap-4 md:gap-[24px] overflow-x-hidden w-full select-none px-4 md:px-10 py-4 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => {
             if (!isDragging) setIsHovered(false);
@@ -144,7 +144,7 @@ export default function WhatWeDo() {
           {displayCards.map((card, idx) => (
             <div 
               key={idx}
-              className="group relative flex-shrink-0 w-[320px] h-[420px] bg-[#111111] overflow-hidden border border-[rgba(245,240,232,0.06)] rounded-none p-[40px] flex flex-col transition-all duration-500 hover:border-[rgba(201,168,76,0.4)] hover:-translate-y-[6px]"
+              className="group relative flex-shrink-0 w-[85vw] sm:w-[320px] h-[420px] bg-[#111111] overflow-hidden border border-[rgba(245,240,232,0.06)] rounded-none p-6 md:p-[40px] flex flex-col transition-all duration-500 hover:border-[rgba(201,168,76,0.4)] hover:-translate-y-[6px]"
             >
               {/* Background Image full fill */}
               <div className="absolute inset-0 w-full h-full z-0">

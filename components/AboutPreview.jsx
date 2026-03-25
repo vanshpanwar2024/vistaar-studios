@@ -19,9 +19,9 @@ export default function AboutPreview() {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full bg-black-deep py-32 md:py-48 overflow-hidden z-10"
+      className="relative w-full bg-black-deep py-20 md:py-48 overflow-hidden z-10"
     >
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         
         {/* Left: Text Content */}
         <motion.div 
@@ -54,15 +54,15 @@ export default function AboutPreview() {
           </a>
         </motion.div>
 
-        {/* Right: Stacked Fanned Cards */}
+        {/* Right: Stacked Fanned Cards (Desktop Only - Large Screens) */}
         <motion.div 
-          className="relative h-[60vh] md:h-[80vh] w-full hidden md:flex items-center justify-center order-1 md:order-2"
+          className="relative h-[80vh] w-full hidden xl:flex items-center justify-center order-1 md:order-2"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
-          <div className="relative w-[280px] h-[400px] md:w-[320px] md:h-[440px] cursor-pointer perspective-[1000px]">
+          <div className="relative w-[320px] h-[440px] cursor-pointer perspective-[1000px]">
             {[
               { id: 1, src: "/gallery-1.png", defaultRotate: -15, defaultX: -130, defaultY: 30, zIndex: 10 },
               { id: 2, src: "/gallery-2.png", defaultRotate: -5,  defaultX: -45,  defaultY: 0,  zIndex: 20 },
@@ -94,11 +94,32 @@ export default function AboutPreview() {
                   fill
                   className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 />
-                {/* A subtle overlay to enhance depth when not hovered */}
                 <div className="absolute inset-0 bg-black/20 hover:bg-transparent transition-colors duration-500" />
               </motion.div>
             ))}
           </div>
+        </motion.div>
+
+        {/* Right: Single Straight Image (Tablet & iPad Pro) */}
+        <motion.div 
+          className="relative h-[60vh] w-full hidden md:flex xl:hidden items-center justify-center order-1 md:order-2"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <motion.div 
+            className="relative w-[300px] h-[400px] rounded-[4px] border-[1px] border-[rgba(201,168,76,0.3)] bg-[#080808] overflow-hidden drop-shadow-[0_25px_25px_rgba(0,0,0,0.9)]"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Image 
+              src="/gallery-2.png" // Using the second image as the representative one
+              alt="Vistaar About"
+              fill
+              className="object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
+            />
+          </motion.div>
         </motion.div>
 
       </div>

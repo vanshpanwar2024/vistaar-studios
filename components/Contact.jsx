@@ -24,7 +24,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="bg-[#050505] py-[140px] px-[20px] md:px-[60px] relative z-10 w-full">
+    <section id="contact" className="bg-[#050505] py-24 md:py-[140px] px-6 md:px-[60px] relative z-10 w-full overflow-hidden">
       <motion.div 
         className="max-w-6xl mx-auto flex flex-col items-center"
         variants={containerVariants}

@@ -46,12 +46,12 @@ export default function EventsPreview() {
     <section 
       id="events"
       ref={containerRef}
-      className="relative w-full bg-black-deep py-24 md:py-32 overflow-hidden z-10"
+      className="relative w-full bg-black-deep py-20 md:py-32 overflow-hidden z-10"
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col items-center">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-12 flex flex-col items-center">
         
         {/* Top Section: Centered Heading & Subtext */}
-        <div className="flex flex-col items-center text-center max-w-4xl mb-20 md:mb-24">
+        <div className="flex flex-col items-center text-center max-w-4xl mb-16 md:mb-24 px-2">
           
           <motion.div 
              initial={{ opacity: 0, y: 30 }}
@@ -59,12 +59,12 @@ export default function EventsPreview() {
              transition={{ duration: 0.8 }}
              viewport={{ once: true }}
           >
-            <span className="block text-[10px] text-gold font-body uppercase tracking-[0.3em] mb-6">
+            <span className="block text-[9px] md:text-[10px] text-gold font-body uppercase tracking-[0.3em] mb-4 md:mb-6">
               Upcoming Events
             </span>
             {/* Heading in one line as requested */}
-            <h2 className="font-display font-[300] text-[clamp(32px,4vw,64px)] text-off-white leading-[1.1] mb-8 whitespace-nowrap">
-              Where Every Stage <span className="text-gold italic">Tells a Story.</span>
+            <h2 className="font-display font-[300] text-[clamp(28px,6vw,64px)] text-off-white leading-[1.2] md:leading-[1.1] mb-6 md:mb-8">
+              Where Every Stage <span className="text-gold italic block sm:inline">Tells a Story.</span>
             </h2>
           </motion.div>
 
