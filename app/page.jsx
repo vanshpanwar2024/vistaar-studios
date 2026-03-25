@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import AboutPreview from "@/components/AboutPreview";
 import WhatWeDo from "@/components/WhatWeDo";
+import EventsPreview from "@/components/EventsPreview";
 import Contact from "@/components/Contact";
 
 export default function Home() {
@@ -11,9 +12,7 @@ export default function Home() {
         <AboutPreview />
         <WhatWeDo />
         
-        <div id="events" className="h-screen flex items-center justify-center">
-          <h2 className="font-display text-4xl text-gold tracking-widest">Events Section Coming — Day 2</h2>
-        </div>
+        <EventsPreview />
 
         <Contact />
       </div>
