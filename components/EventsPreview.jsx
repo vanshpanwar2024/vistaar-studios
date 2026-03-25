@@ -7,22 +7,32 @@ import { supabase } from "@/lib/supabase";
 
 export default function EventsPreview() {
   const containerRef = useRef(null);
-  const [latestEvent, setLatestEvent] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchLatestEvent = async () => {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('status', 'Upcoming')
-        .order('event_date', { ascending: true })
-        .limit(1)
-        .single();
-      
-      if (data) setLatestEvent(data);
+    const fetchEvents = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('events')
+          .select('*')
+          .eq('status', 'Upcoming')
+          .order('event_date', { ascending: true })
+          .limit(3);
+        
+        if (error) {
+           console.error("Supabase error:", error);
+           setError(true);
+        } else if (data) {
+           setEvents(data);
+        }
+      } catch (err) {
+         console.error("Fetch error:", err);
+         setError(true);
+      }
     };
 
-    fetchLatestEvent();
+    fetchEvents();
   }, []);
   
   const { scrollYProgress } = useScroll({
@@ -30,90 +40,135 @@ export default function EventsPreview() {
     offset: ["start end", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["20%", "-20%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   
   return (
     <section 
       id="events"
       ref={containerRef}
-      className="relative w-full bg-black-deep py-32 md:py-48 overflow-hidden z-10"
+      className="relative w-full bg-black-deep py-24 md:py-32 overflow-hidden z-10"
     >
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col items-center">
         
-        {/* Left: Text Content */}
-        <motion.div 
-          className="flex flex-col justify-center order-2 md:order-1"
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          {/* Section Label */}
-          <div className="flex items-center space-x-4 mb-6">
-            <span className="text-[8px] text-gold font-body uppercase tracking-[5px]">
-              UPCOMING EVENTS
+        {/* Top Section: Centered Heading & Subtext */}
+        <div className="flex flex-col items-center text-center max-w-4xl mb-20 md:mb-24">
+          
+          <motion.div 
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8 }}
+             viewport={{ once: true }}
+          >
+            <span className="block text-[10px] text-gold font-body uppercase tracking-[0.3em] mb-6">
+              Upcoming Events
             </span>
-          </div>
+            {/* Heading in one line as requested */}
+            <h2 className="font-display font-[300] text-[clamp(32px,4vw,64px)] text-off-white leading-[1.1] mb-8 whitespace-nowrap">
+              Where Every Stage <span className="text-gold italic">Tells a Story.</span>
+            </h2>
+          </motion.div>
 
-          {/* Heading */}
-          <h2 className="font-display font-[300] text-[clamp(48px,5vw,64px)] text-off-white mb-2 leading-tight">
-            Where Every Stage <br />
-            <span className="text-gold italic">Tells a Story.</span>
-          </h2>
+          <motion.div 
+             className="max-w-xl"
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8, delay: 0.2 }}
+             viewport={{ once: true }}
+          >
+             <p className="text-off-white-dim font-body text-[13px] tracking-[0.05em] leading-[1.8]">
+              At Vistaar Studios, every event is a carefully produced experience where emerging talent steps into the spotlight. From preliminary rounds to grand finales, we build stages designed to honour the art.
+            </p>
+          </motion.div>
 
-          {/* Description */}
-          <p className="text-off-white-dim font-body text-[12px] tracking-[1px] leading-[2] mb-10 max-w-[480px]">
-            At Vistaar Studios, every event is more than a competition — it is a carefully produced experience where emerging dancers, models, and performers step into the spotlight they have always deserved. From preliminary rounds to grand finales, every stage we build is designed to honour the talent standing on it.
-          </p>
-        </motion.div>
+        </div>
 
-        {/* Right: Single Event Card + Button */}
-        <motion.div 
-          className="relative w-full flex flex-col items-center justify-center order-1 md:order-2 gap-8"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        >
-          {latestEvent ? (
-            <div className="relative w-[280px] h-[350px] md:w-[320px] md:h-[450px] border border-[rgba(201,168,76,0.3)] bg-[#080808] overflow-hidden group">
-              <Image 
-                src={latestEvent.image_url || "/gallery-1.png"}
-                alt={latestEvent.title}
-                fill
-                className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
-              
-              <div className="absolute bottom-0 left-0 w-full p-6 flex flex-col items-start text-left">
-                <span className="font-body text-[9px] text-gold tracking-[2px] uppercase mb-1">
-                  {new Date(latestEvent.event_date).toLocaleDateString("en-US", { month: 'long', day: 'numeric' })}
-                </span>
-                <h3 className="font-display text-xl md:text-2xl text-off-white mb-1">
-                  {latestEvent.title}
-                </h3>
-                <p className="font-body text-[10px] text-off-white-dim line-clamp-2">
-                  {latestEvent.location}
-                </p>
-              </div>
-            </div>
+        {/* Middle Section: Grid of Smaller Event Cards (2-3 per row) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-20">
+          {error ? (
+             <div className="col-span-1 md:col-span-3 w-full h-[200px] border border-dashed border-red-900/30 flex flex-col items-center justify-center gap-4">
+                 <p className="text-red-400 text-sm uppercase tracking-widest">Unable to load events</p>
+                 <button onClick={() => window.location.reload()} className="text-[10px] uppercase tracking-widest border-b border-red-400 text-red-400 pb-1 hover:text-white hover:border-white transition-colors">Retry</button>
+             </div>
+          ) : events.length > 0 ? (
+            events.map((event, index) => (
+              <motion.div 
+                key={event.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="group relative flex flex-col w-full border border-[rgba(255,255,255,0.05)] bg-[#0A0A0A] overflow-hidden hover:border-[rgba(201,168,76,0.3)] transition-all duration-500"
+              >
+                {/* Image Section - Top */}
+                <div className="relative w-full h-[240px] overflow-hidden">
+                   {event.image_url ? (
+                     <Image 
+                        src={event.image_url}
+                        alt={event.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                     />
+                   ) : (
+                      <div className="w-full h-full bg-[#111] flex items-center justify-center">
+                        <span className="text-off-white-dim text-xs">No Image</span>
+                      </div>
+                   )}
+                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                </div>
+
+                {/* Content Section - Bottom */}
+                <div className="flex flex-col flex-grow p-6 md:p-8 bg-[#0A0A0A]">
+                    
+                    <div className="mb-3">
+                      <span className="inline-block text-gold font-body text-[9px] uppercase tracking-[2px]">
+                         {new Date(event.event_date).toLocaleDateString("en-US", { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </span>
+                    </div>
+
+                    <h3 className="font-display text-xl md:text-2xl text-white mb-3 group-hover:text-gold transition-colors duration-300">
+                      {event.title}
+                    </h3>
+
+                    <p className="font-body text-[11px] text-[rgba(255,255,255,0.6)] leading-relaxed mb-6 line-clamp-3">
+                      {event.description}
+                    </p>
+                    
+                     <div className="flex flex-wrap gap-4 text-[9px] text-off-white-dim font-body uppercase tracking-[0.1em] mb-6 mt-auto">
+                        <div className="flex items-center gap-1.5">
+                           <span className="text-gold">📍</span> <span className="truncate max-w-[120px]">{event.location}</span>
+                        </div>
+                        {event.preliminary_fee && (
+                          <div className="flex items-center gap-1.5">
+                             <span className="text-gold">🎟️</span> {event.preliminary_fee}
+                          </div>
+                        )}
+                    </div>
+
+                    <Link href={`/events/${event.id}`} className="inline-block border-b border-gold text-gold font-body text-[9px] uppercase tracking-[2px] pb-1 w-max hover:text-white hover:border-white transition-all duration-300">
+                       View Details
+                    </Link>
+                </div>
+              </motion.div>
+            ))
           ) : (
-            // Fallback placeholder if no event exists
-            <div className="relative w-[280px] h-[350px] md:w-[320px] md:h-[450px] border border-[rgba(201,168,76,0.3)] bg-[#080808] flex items-center justify-center">
-              <span className="text-off-white-dim font-body text-xs tracking-widest">NO UPCOMING EVENTS</span>
-            </div>
+             <div className="col-span-1 md:col-span-3 w-full h-[200px] border border-dashed border-[rgba(255,255,255,0.1)] flex items-center justify-center">
+                 <p className="text-off-white-dim text-sm uppercase tracking-widest">No upcoming events found</p>
+             </div>
           )}
+        </div>
 
-
-          {/* CTA Link Moved Below Card */}
-          <Link href="/events" className="group relative inline-flex items-center space-x-4 w-max pointer-events-auto mt-4">
-            <span className="font-body text-[8px] uppercase tracking-[5px] text-off-white-dim group-hover:text-gold transition-colors duration-300">
-              EXPLORE ALL EVENTS
+        {/* Bottom: Explore Button */}
+        <div className="flex justify-center">
+          <Link 
+            href="/events" 
+            className="group relative inline-flex items-center justify-center px-12 py-4 border border-[rgba(201,168,76,0.3)] hover:border-gold hover:bg-[rgba(201,168,76,0.05)] transition-all duration-300"
+          >
+            <span className="font-body text-[10px] uppercase tracking-[3px] text-off-white group-hover:text-gold transition-colors">
+              Explore All Events
             </span>
-            <div className="w-[50px] h-[1px] bg-gold opacity-80" />
           </Link>
-
-        </motion.div>
+        </div>
 
       </div>
     </section>

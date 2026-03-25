@@ -2,57 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-
-const cardsData = [
-  {
-    number: "01",
-    title: "Fashion Events",
-    description: "Premier runway shows and fashion competitions giving emerging models a professional stage to shine on.",
-    bgImage: "/what-we-do-1.png"
-  },
-  {
-    number: "02",
-    title: "Dance Competitions",
-    description: "Multi-category dance championships across all styles. From classical to contemporary, every form celebrated.",
-    bgImage: "/what-we-do-2.png"
-  },
-  {
-    number: "03",
-    title: "Portfolio Shoots",
-    description: "Book professional photographers and videographers through our marketplace. Build a portfolio that opens doors.",
-    bgImage: "/what-we-do-3.png"
-  },
-  {
-    number: "04",
-    title: "Talent Workshops",
-    description: "Curated workshops in dance, fashion, grooming, ramp walk and personality development by industry professionals.",
-    bgImage: "/what-we-do-4.png"
-  },
-  {
-    number: "05",
-    title: "Grand Finale Shows",
-    description: "Our flagship annual event bringing together the best talent from across Delhi NCR on one spectacular stage.",
-    bgImage: "/what-we-do-5.png"
-  },
-  {
-    number: "06",
-    title: "Studio Partnerships",
-    description: "We partner with Delhi NCR's finest academies giving their students access to real professional stage opportunities.",
-    bgImage: "/what-we-do-6.png"
-  },
-  {
-    number: "07",
-    title: "Casting Auditions",
-    description: "Connect with brands, directors, and agencies looking for fresh faces and performance talent through our platform.",
-    bgImage: "/what-we-do-7.png"
-  },
-  {
-    number: "08",
-    title: "Talent Discovery",
-    description: "Our nationwide talent scouting program identifying and nurturing India's next generation of fashion and performance stars.",
-    bgImage: "/what-we-do-8.png"
-  }
-];
+import { WHAT_WE_DO_CARDS } from "@/lib/data";
 
 export default function WhatWeDo() {
   const scrollRef = useRef(null);
@@ -66,7 +16,7 @@ export default function WhatWeDo() {
   const resumeTimeoutRef = useRef(null);
 
   // Duplicate for infinite scroll
-  const displayCards = [...cardsData, ...cardsData];
+  const displayCards = [...WHAT_WE_DO_CARDS, ...WHAT_WE_DO_CARDS];
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -95,7 +45,7 @@ export default function WhatWeDo() {
     const handleScroll = () => {
       if (!scrollRef.current) return;
       const cardWidth = 320 + 24; // width + gap
-      const index = Math.round(scrollRef.current.scrollLeft / cardWidth) % cardsData.length;
+      const index = Math.round(scrollRef.current.scrollLeft / cardWidth) % WHAT_WE_DO_CARDS.length;
       setActiveIndex(index);
     };
 
@@ -231,7 +181,7 @@ export default function WhatWeDo() {
 
       {/* Navigation Dots */}
       <div className="flex justify-center items-center space-x-3 mt-10">
-        {cardsData.map((_, idx) => (
+        {WHAT_WE_DO_CARDS.map((_, idx) => (
           <button
             key={idx}
             onClick={() => scrollToCard(idx)}

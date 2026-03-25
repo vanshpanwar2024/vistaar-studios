@@ -13,12 +13,18 @@ export default function Events() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const { data } = await supabase
+        setLoading(true);
+        const { data, error } = await supabase
           .from('events')
           .select('*')
-          .eq('status', 'Upcoming')
           .order('event_date', { ascending: true });
-        setEvents(data || []);
+        
+        if (error) {
+          console.error("Supabase error:", error);
+        } else {
+          console.log("Supabase data:", data);
+          setEvents(data || []);
+        }
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
@@ -56,11 +62,10 @@ export default function Events() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="w-full h-[500px] bg-[#111] animate-pulse border border-[rgba(201,168,76,0.1)] relative overflow-hidden">
-                <div className="absolute top-0 right-0 bottom-0 left-0 bg-gradient-to-r from-transparent via-[rgba(201,168,76,0.05)] to-transparent translate-x-[-100%] animate-[shimmer_1.5s_infinite]" />
-              </div>
+          // Adjusted skeleton to match zig-zag layout
+          <div className="flex flex-col gap-12 max-w-5xl mx-auto">
+            {[1, 2].map(i => (
+              <div key={i} className="w-full h-[240px] bg-[#111] animate-pulse border border-[rgba(201,168,76,0.1)] relative overflow-hidden" />
             ))}
           </div>
         ) : events.length === 0 ? (
@@ -82,55 +87,76 @@ export default function Events() {
             </a>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex flex-col gap-12 max-w-5xl mx-auto">
             {events.map((event, i) => (
               <motion.div 
                 key={event.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: i * 0.1 }}
-                className={`relative group border border-[rgba(201,168,76,0.15)] bg-[#0e0e0e] overflow-hidden flex flex-col justify-between p-8 ${event.is_featured ? 'md:col-span-3 min-h-[600px] md:flex-row items-end p-12' : 'min-h-[500px]'}`}
+                // Zig-Zag Layout: Even index (i%2===0) -> Row | Odd index -> Row-Reverse
+                className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} w-full min-h-[240px] border border-[rgba(201,168,76,0.2)] bg-[#0e0e0e] group hover:border-[rgba(201,168,76,0.5)] transition-colors duration-500`}
               >
-                {/* Background Image Setup */}
-                {event.image_url && (
-                  <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-500 z-10" />
-                    <img 
-                      src={event.image_url} 
-                      alt={event.title}
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
-                    />
-                  </div>
-                )}
-                
-                {/* Corner Accents */}
-                <div className="absolute top-0 left-0 w-[15px] h-[15px] border-t border-l border-gold m-[10px] z-20" />
-                <div className="absolute top-0 right-0 w-[15px] h-[15px] border-t border-r border-gold m-[10px] z-20" />
-                <div className="absolute bottom-0 left-0 w-[15px] h-[15px] border-b border-l border-gold m-[10px] z-20" />
-                <div className="absolute bottom-0 right-0 w-[15px] h-[15px] border-b border-r border-gold m-[10px] z-20" />
-
-                <div className={`relative z-20 ${event.is_featured ? 'md:w-1/2' : ''}`}>
-                  <span className="inline-block bg-[rgba(201,168,76,0.1)] border border-gold text-gold font-body text-[8px] uppercase tracking-widest px-3 py-1 mb-4">
-                    {event.category}
-                  </span>
-                  <h3 className={`font-display text-off-white leading-tight mb-4 ${event.is_featured ? 'text-4xl md:text-6xl' : 'text-3xl'}`}>
-                    {event.title}
-                  </h3>
-                  <p className={`font-body text-off-white-dim mb-6 ${event.is_featured ? 'text-[12px] md:text-[14px]' : 'text-[11px]'}`}>
-                    {event.description}
-                  </p>
-                  
-                  <div className="flex flex-col gap-2 mb-8 font-body text-[10px] text-[rgba(255,255,255,0.7)] uppercase tracking-wider">
-                    <p><span className="text-gold mr-2">Date:</span> {new Date(event.event_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
-                    <p><span className="text-gold mr-2">Location:</span> {event.location}</p>
-                    <p><span className="text-gold mr-2">Fee:</span> ₹{event.preliminary_fee}</p>
-                  </div>
+                {/* Image Section - 50% Width */}
+                <div className="relative w-full md:w-1/2 min-h-[240px] md:min-h-full overflow-hidden">
+                   {event.image_url ? (
+                    <>
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                      <Image 
+                        src={event.image_url} 
+                        alt={event.title}
+                        fill
+                        className="object-cover transform group-hover:scale-105 transition-transform duration-700" 
+                      />
+                    </>
+                   ) : (
+                     <div className="w-full h-full bg-[#111] flex items-center justify-center">
+                        <span className="text-off-white-dim text-xs">No Image</span>
+                     </div>
+                   )}
                 </div>
 
-                <div className={`relative z-20 ${event.is_featured ? 'md:w-1/2 flex justify-end' : ''}`}>
-                  <Link href="/register" className={`group/btn inline-block bg-gold text-black-deep font-body text-[10px] uppercase tracking-widest py-3 px-8 hover:bg-off-white transition-colors duration-300 ${event.is_featured ? 'mb-4' : 'w-full text-center'}`}>
-                    Register Now
-                  </Link>
+                {/* Content Section - 50% Width */}
+                <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center bg-black-deep text-left relative">
+                    
+                    {/* Date Tag */}
+                    <span className="inline-block text-gold font-body text-[9px] uppercase tracking-[2px] mb-3">
+                        {new Date(event.event_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </span>
+
+                    {/* Title */}
+                    <h3 className="font-display text-2xl md:text-3xl text-off-white mb-3 group-hover:text-gold transition-colors duration-300">
+                        {event.title}
+                    </h3>
+
+                    {/* Category Label */}
+                    <span className="text-[10px] text-[rgba(255,255,255,0.4)] tracking-wider uppercase mb-4">
+                        {event.category || 'Event'}
+                    </span>
+
+                    {/* Description */}
+                    <p className="font-body text-[11px] text-off-white-dim leading-relaxed mb-6 line-clamp-3 md:line-clamp-none">
+                        {event.description}
+                    </p>
+                  
+                    {/* Metadata Grid */}
+                    <div className="grid grid-cols-2 gap-y-2 gap-x-4 mb-8 font-body text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-wider">
+                        <div className="flex items-center gap-2">
+                             <span className="text-gold">📍</span> 
+                             <span className="truncate">{event.location}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                             <span className="text-gold">🎟️</span> 
+                             <span>{event.preliminary_fee ? `₹${event.preliminary_fee}` : 'Free'}</span>
+                        </div>
+                    </div>
+
+                    {/* CTA Button */}
+                    <div className="mt-auto">
+                        <Link href="/register" className="inline-block border-b border-gold text-gold font-body text-[10px] uppercase tracking-[3px] pb-1 hover:text-white hover:border-white transition-all duration-300">
+                            Register Now
+                        </Link>
+                    </div>
                 </div>
               </motion.div>
             ))}

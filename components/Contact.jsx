@@ -1,41 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const faqData = [
-  {
-    category: "For Participants & Parents",
-    faqs: [
-      { q: "Q1. Who can participate in Vistaar Studios events?", a: "Anyone with a passion for dance or fashion can participate. Our events are open to all age groups — kids, teenagers, and adults. No prior professional experience is required. If you have talent and the drive to perform, Vistaar Studios is your stage." },
-      { q: "Q2. What is the registration fee and what does it include?", a: "The preliminary registration fee is ₹399. This includes a professional evaluation of your submission by our judges panel, an official participation certificate, eligibility to be featured on our social media, and priority access to future Vistaar events. Selected finalists pay a separate finale fee of ₹1499 which locks their spot on the grand stage." },
-      { q: "Q3. How does the selection process work?", a: "After registering, participants submit a 1-minute performance video or portfolio. Our judges panel reviews all submissions and selects finalists based on talent, stage presence, and potential. Results are announced within 7 working days. Every participant receives a certificate regardless of the outcome — no one leaves empty handed." },
-      { q: "Q4. What happens if I am not selected after the preliminary round?", a: "Not being selected for the finale does not mean the end. Every registered participant receives an official participation certificate and professional feedback on their submission. We also feature selected non-finalist performances on our social media. Many of our past finalists were participants who came back stronger the next season." },
-      { q: "Q5. What do selected finalists receive?", a: "Selected finalists receive an official contestant number, a Vistaar Studios finalist sash, professional photography on event day, a finalist certificate, and the opportunity to perform in front of a live audience, judges panel, and industry guests. Winners additionally receive trophies, titles, and exciting prizes from our sponsors." },
-      { q: "Q6. What is the refund policy?", a: "Preliminary registration fees are non-refundable as they cover the cost of evaluation and participation materials. In the rare case that an event is cancelled or postponed by Vistaar Studios, participants will receive a full refund or credit toward the next event. We recommend reaching out to us directly on WhatsApp for any special circumstances." },
-    ]
-  },
-  {
-    category: "For Studio Partners",
-    faqs: [
-        { q: "Q7. How does the studio partnership program work?", a: "Studio partners promote Vistaar events to their students and earn a revenue share on every registration that comes through their studio. Each partner gets a unique referral code, co-branded marketing material with their studio name, free passes to the finale, and a dedicated Studio Challenge trophy for the partner that sends the most participants. It is a zero-cost, high-reward partnership." },
-        { q: "Q8. What is the revenue share percentage for studio partners?", a: "Studio partners earn 20–25% on every registration fee paid by their students. Payments are processed within 7 working days after the preliminary registration period closes. There is no cap on earnings — the more students you send, the more you earn." },
-        { q: "Q9. Is there a minimum number of students required to become a partner?", a: "No minimum is required to sign up as a partner. However we recommend partners aim to send at least 10 students to qualify for the Studio Challenge trophy and additional co-branded visibility benefits. Even a single registration earns you your revenue share." },
-    ]
-  },
-  {
-    category: "For Sponsors",
-    faqs: [
-        { q: "Q10. What sponsorship packages are available?", a: "We offer three sponsorship tiers — Title Sponsor, Category Sponsor, and Associate Sponsor. Each tier includes a combination of on-ground branding, social media visibility, audience reach, and activation opportunities. We also offer custom packages built around your specific marketing goals. Reach out to us at hello@vistaarstudios.in for our detailed sponsorship deck." },
-        { q: "Q11. What is the audience demographic at your events?", a: "Our events attract participants aged 6–25 years along with their parents, families, and talent community. The majority of our audience comes from Delhi NCR — South Delhi, Noida, Gurgaon, and Faridabad. This is an aspirational, engaged, and spending demographic making it ideal for brands in fashion, beauty, education, fitness, and lifestyle categories." },
-    ]
-  },
-  {
-    category: "General",
-    faqs: [
-        { q: "Q12. What is Vistaar Studios' vision for the future?", a: "Vistaar Studios was born in Delhi NCR with one clear ambition — to become India's most trusted talent and fashion events platform. We are building a national ecosystem that connects dancers, models, performers, studios, photographers, and brands under one roof. From Delhi NCR today to every major city in India tomorrow — this is just the beginning." }
-    ]
-  }
-];
+import { FAQ_DATA } from "@/lib/data";
 
 export default function Contact() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,7 +51,7 @@ export default function Contact() {
 
         {/* FAQs Section */}
         <motion.div variants={itemVariants} className="w-full max-w-6xl mb-24 grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-16 text-left items-start">
-          {faqData.map((section, sIdx) => (
+          {FAQ_DATA.map((section, sIdx) => (
             <div key={sIdx} className="flex flex-col group/category cursor-pointer">
               <h3 className="font-display font-[300] text-[26px] text-gold mb-2 border-b border-[rgba(201,168,76,0.3)] pb-2 flex items-center justify-between transition-colors duration-300 group-hover/category:border-[rgba(201,168,76,0.8)]">
                 <span>{section.category}</span>

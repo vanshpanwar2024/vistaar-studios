@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const cormorant = Cormorant_Garamond({ 
   subsets: ["latin"], 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
       <body className="font-body opacity-90 relative antialiased min-h-screen flex flex-col">
+        <LoadingScreen />
         <CustomCursor />
         <Navbar />
         <main className="flex-grow">
