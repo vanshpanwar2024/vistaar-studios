@@ -123,7 +123,7 @@ export default function Navbar() {
           {/* Right CTA / Mobile Toggle */}
           <div className="flex items-center space-x-4">
             <Link 
-              href="/register"
+              href="/events/upcoming"
               className="hidden md:inline-block border border-gold text-gold font-body text-sm uppercase tracking-wide py-2 px-6 rounded-none hover:bg-gold hover:text-black-deep transition-all duration-300"
             >
               Register Now
@@ -203,7 +203,7 @@ export default function Navbar() {
                 className="pt-8"
               >
                 <Link 
-                  href="/register"
+                  href="/events/upcoming"
                   className="inline-block border border-gold text-gold font-body text-sm uppercase tracking-wide py-3 px-8 rounded-none hover:bg-gold hover:text-black-deep transition-all duration-300"
                   onClick={() => setMobileMenuOpen(false)}
                 >

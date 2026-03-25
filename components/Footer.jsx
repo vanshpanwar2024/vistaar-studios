@@ -53,7 +53,7 @@ export default function Footer() {
               {['Collaborate', 'Register Now'].map((item) => (
                 <Link 
                   key={item} 
-                  href={item === 'Register Now' ? '/register' : `/${item.toLowerCase().replace(' ', '')}`}
+                  href={item === 'Register Now' ? '/events/upcoming' : `/${item.toLowerCase().replace(' ', '')}`}
                   className="font-body text-[10px] tracking-[2px] text-off-white-dim uppercase hover:text-gold transition-colors duration-300"
                 >
                   {item}
