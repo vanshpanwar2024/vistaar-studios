@@ -157,15 +157,11 @@ export default function UpcomingEvents() {
                         {event.description}
                     </p>
                   
-                    {/* Metadata: Location & Price */}
-                    <div className="grid grid-cols-2 gap-y-2 gap-x-4 mb-8 font-body text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-wider border-t border-[rgba(255,255,255,0.1)] pt-4">
+                    {/* Metadata: Location */}
+                    <div className="mb-8 font-body text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-wider border-t border-[rgba(255,255,255,0.1)] pt-4">
                         <div className="flex items-center gap-2">
                              <span className="text-gold">📍</span> 
                              <span className="truncate">{event.location}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                             <span className="text-gold">🎟️</span> 
-                             <span>{event.preliminary_fee ? `₹${event.preliminary_fee}` : 'Free'}</span>
                         </div>
                     </div>
 

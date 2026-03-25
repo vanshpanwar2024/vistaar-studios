@@ -227,6 +227,7 @@ export default function Contact() {
                         value={formData.countryCode}
                         onChange={handleChange}
                         className="bg-black border border-r-0 border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-[110px] appearance-none cursor-pointer"
+                        required
                       >
                         <option value="+91">🇮🇳 +91</option>
                         <option value="+1">🇺🇸 +1</option>
@@ -272,6 +273,7 @@ export default function Contact() {
                     value={formData.role}
                     onChange={handleChange}
                     className="bg-black border border-[rgba(201,168,76,0.2)] text-off-white p-4 font-body text-sm outline-none focus:border-[rgba(201,168,76,0.6)] transition-colors duration-300 rounded-none w-full appearance-none cursor-pointer"
+                    required
                   >
                     <option value="Participant">Participant</option>
                     <option value="Studio Owner">Studio Owner</option>
