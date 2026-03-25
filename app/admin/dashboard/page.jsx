@@ -17,6 +17,7 @@ export default function AdminDashboard() {
     category: "Fashion Event",
     location: "",
     event_date: "",
+    is_month_only: false, // Added state for month-only toggle
     registration_deadline: "",
     preliminary_fee: "",
     finale_fee: "",
@@ -115,7 +116,7 @@ export default function AdminDashboard() {
       // Reset form
       setFormData({
         title: "", description: "", category: "Fashion Event", location: "",
-        event_date: "", registration_deadline: "", preliminary_fee: "", finale_fee: "",
+        event_date: "", is_month_only: false, registration_deadline: "", preliminary_fee: "", finale_fee: "",
         max_participants: "", status: "Upcoming", is_featured: false, image_url: ""
       });
       setEditingId(null);
@@ -135,6 +136,7 @@ export default function AdminDashboard() {
       category: event.category || "Fashion Event",
       location: event.location || "",
       event_date: event.event_date || "",
+      is_month_only: event.is_month_only || false, // Should be fetched from DB
       registration_deadline: event.registration_deadline || "",
       preliminary_fee: event.preliminary_fee || "",
       finale_fee: event.finale_fee || "",
@@ -252,14 +254,50 @@ export default function AdminDashboard() {
 
             <div>
               <label className="block font-body text-[10px] text-gold uppercase tracking-wider mb-2">Event Date</label>
-              <input 
-                type="date" 
-                value={formData.event_date}
-                onChange={e => setFormData({...formData, event_date: e.target.value})}
-                required
-                className="w-full bg-[#111] border border-[rgba(201,168,76,0.15)] text-off-white p-[14px_18px] font-body text-[12px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] transition-all"
-                style={{ colorScheme: "dark" }}
-              />
+              
+              {/* Toggle Event Date Type: Exact Date vs Month Only */}
+              <div className="flex gap-4 mb-3">
+                 <label className="flex items-center gap-2 cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="dateType" 
+                      checked={!formData.is_month_only} 
+                      onChange={() => setFormData({...formData, is_month_only: false, event_date: ''})}
+                      className="accent-gold"
+                    />
+                    <span className="text-off-white text-[10px] uppercase">Exact Date</span>
+                 </label>
+                 <label className="flex items-center gap-2 cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="dateType" 
+                      checked={formData.is_month_only} 
+                      onChange={() => setFormData({...formData, is_month_only: true, event_date: ''})}
+                      className="accent-gold"
+                    />
+                    <span className="text-off-white text-[10px] uppercase">Month Only</span>
+                 </label>
+              </div>
+
+              {formData.is_month_only ? (
+                 <input 
+                  type="month" 
+                  value={formData.event_date ? formData.event_date.slice(0, 7) : ''}
+                  onChange={e => setFormData({...formData, event_date: `${e.target.value}-01`})} // Store as 1st of month
+                  required
+                  className="w-full bg-[#111] border border-[rgba(201,168,76,0.15)] text-off-white p-[14px_18px] font-body text-[12px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] transition-all"
+                  style={{ colorScheme: "dark" }}
+                />
+              ) : (
+                <input 
+                  type="date" 
+                  value={formData.event_date}
+                  onChange={e => setFormData({...formData, event_date: e.target.value})}
+                  required
+                  className="w-full bg-[#111] border border-[rgba(201,168,76,0.15)] text-off-white p-[14px_18px] font-body text-[12px] focus:outline-none focus:border-[rgba(201,168,76,0.6)] transition-all"
+                  style={{ colorScheme: "dark" }}
+                />
+              )}
             </div>
 
             <div>
