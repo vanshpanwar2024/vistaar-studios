@@ -105,33 +105,33 @@ export default function UpcomingEvents() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: i * 0.1 }}
-                className="group relative flex flex-col w-full h-[500px] border border-[rgba(255,255,255,0.05)] bg-[#0A0A0A] overflow-hidden hover:border-[rgba(201,168,76,0.3)] transition-all duration-500"
+                className="group relative flex flex-col md:flex-row w-full bg-[#0A0A0A] border border-[rgba(255,255,255,0.05)] overflow-hidden hover:border-[rgba(201,168,76,0.3)] transition-all duration-500"
               >
-                  {/* Background Image full fill */}
-                  <div className="absolute inset-0 w-full h-full z-0">
+                  {/* Image Section */}
+                  <div className="relative w-full md:w-[45%] h-[300px] md:h-auto overflow-hidden">
                      {event.image_url ? (
                        <Image 
                           src={event.image_url}
                           alt={event.title}
                           fill
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                          className="object-cover opacity-60 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-80"
+                          sizes="(max-width: 768px) 100vw, 45vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
                        />
                      ) : (
                         <div className="w-full h-full bg-[#111] flex items-center justify-center">
                           <span className="text-off-white-dim text-xs uppercase tracking-widest">Image Unavailable</span>
                         </div>
                      )}
-                     {/* Gradient overlay */}
-                     <div className="absolute inset-0 bg-gradient-to-t from-black-deep via-[#111111]/80 to-transparent z-10" />
+                     {/* Overlay for subtle darkening on hover */}
+                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                   </div>
 
-                  {/* Content Overlay */}
-                  <div className="relative z-20 flex flex-col justify-end h-full p-8 md:p-10">
+                  {/* Content Section */}
+                  <div className="flex flex-col justify-center w-full md:w-[55%] p-8 md:p-12 relative">
                       
                       {/* Date */}
-                      <div className="mb-2">
-                          <span className="inline-block text-gold font-body text-[10px] uppercase tracking-[2px]">
+                      <div className="mb-4">
+                          <span className="inline-block text-gold font-body text-[11px] uppercase tracking-[2px]">
                               {event.is_month_only 
                                 ? new Date(event.event_date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
                                 : new Date(event.event_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -140,33 +140,33 @@ export default function UpcomingEvents() {
                       </div>
 
                       {/* Title */}
-                      <h3 className="font-display text-2xl md:text-3xl text-off-white mb-2 drop-shadow-md group-hover:text-gold transition-colors duration-300">
+                      <h3 className="font-display text-3xl md:text-4xl text-off-white mb-3 group-hover:text-gold transition-colors duration-300">
                           {event.title}
                       </h3>
                       
                       {/* Category */}
                       {event.category && (
-                        <span className="text-[9px] text-[rgba(245,240,232,0.8)] tracking-[1.5px] uppercase mb-4 block drop-shadow-md">
+                        <span className="text-[10px] text-[rgba(245,240,232,0.6)] tracking-[1.5px] uppercase mb-6 block">
                              {event.category}
                         </span>
                       )}
 
                       {/* Description */}
-                      <p className="font-body text-[12px] text-[rgba(245,240,232,0.8)] leading-[1.8] mb-6 line-clamp-2 drop-shadow-md">
+                      <p className="font-body text-[13px] text-[rgba(245,240,232,0.7)] leading-[1.8] mb-8 line-clamp-3">
                           {event.description}
                       </p>
                     
-                      <div className="flex items-center gap-2 mb-8 font-body text-[10px] text-[rgba(245,240,232,0.8)] uppercase tracking-wider border-t border-[rgba(255,255,255,0.1)] pt-4 w-full">
+                      <div className="flex items-center gap-2 mb-8 font-body text-[11px] text-[rgba(245,240,232,0.6)] uppercase tracking-wider border-t border-[rgba(255,255,255,0.05)] pt-6 w-full">
                            <span className="text-gold">📍</span> 
                            <span className="truncate">{event.location}</span>
                       </div>
 
-                      {/* Link */}
-                      <div className="mt-auto">
+                      {/* Link (if needed, or just card click) */}
+                      {/* <div className="mt-auto">
                           <Link href="/contact" className="inline-block text-gold font-body text-[10px] uppercase tracking-[2px] border-b border-gold pb-1 hover:text-white hover:border-white transition-all duration-300">
                               More Details
                           </Link>
-                      </div>
+                      </div> */}
                   </div>
               </motion.div>
             ))}
