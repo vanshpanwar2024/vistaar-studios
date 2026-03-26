@@ -72,7 +72,7 @@ export default function Footer() {
                 hello@vistaarstudios.in
               </a>
               <a 
-                href="tel:+91XXXXXXXXXX" 
+                href="tel:+918800125054" 
                 className="font-display text-[16px] text-off-white hover:text-gold transition-colors duration-300"
               >
                 +91 8800125054
@@ -130,16 +130,19 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-[16px] order-2 md:order-3">
-            {['Privacy Policy', 'Terms of Use', 'Refund Policy'].map((link, idx) => (
-              <div key={link} className="flex items-center gap-[16px]">
+            {[
+              { label: 'Privacy Policy', href: '/privacy-policy' },
+              { label: 'Terms of Use', href: '/terms-of-use' }
+            ].map((link, idx) => (
+              <div key={link.label} className="flex items-center gap-[16px]">
                 <Link 
-                  href="/legal"
+                  href={link.href}
                   className="font-body text-[8px] text-off-white-dim uppercase tracking-[1px] hover:text-gold transition-colors duration-300"
                 >
-                  {link}
+                  {link.label}
                 </Link>
                 {/* Visual separator on desktop only, hidden on last item */}
-                {idx < 2 && <span className="hidden md:block text-off-white-dim opacity-20 text-[8px]">—</span>}
+                {idx < 1 && <span className="hidden md:block text-off-white-dim opacity-20 text-[8px]">—</span>}
               </div>
             ))}
           </div>
