@@ -105,73 +105,69 @@ export default function UpcomingEvents() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: i * 0.1 }}
-                // THE ZIG-ZAG LAYOUT LOGIC:
-                // If index (i) is even: flex-col (mobile) -> md:flex-row
-                // If index (i) is odd: flex-col (mobile) -> md:flex-row-reverse
-                className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} w-full min-h-[300px] border border-[rgba(201,168,76,0.2)] bg-[#0e0e0e] group hover:border-[rgba(201,168,76,0.5)] transition-colors duration-500 overflow-hidden`}
+                className="group relative flex flex-col w-full h-[500px] border border-[rgba(255,255,255,0.05)] bg-[#0A0A0A] overflow-hidden hover:border-[rgba(201,168,76,0.3)] transition-all duration-500"
               >
-                {/* IMAGE SECTION - 50% width on Desktop */}
-                <div className="relative w-full md:w-1/2 h-[300px] md:h-auto overflow-hidden">
-                   {event.image_url ? (
-                    <>
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
-                      <Image 
-                        src={event.image_url} 
-                        alt={event.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover transform group-hover:scale-105 transition-transform duration-700" 
-                      />
-                    </>
-                   ) : (
-                     <div className="w-full h-full bg-[#111] flex items-center justify-center border-b md:border-b-0 md:border-r border-[rgba(201,168,76,0.1)]">
-                        <span className="text-off-white-dim text-xs uppercase tracking-widest">Image Unavailable</span>
-                     </div>
-                   )}
-                </div>
+                  {/* Background Image full fill */}
+                  <div className="absolute inset-0 w-full h-full z-0">
+                     {event.image_url ? (
+                       <Image 
+                          src={event.image_url}
+                          alt={event.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover opacity-60 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-80"
+                       />
+                     ) : (
+                        <div className="w-full h-full bg-[#111] flex items-center justify-center">
+                          <span className="text-off-white-dim text-xs uppercase tracking-widest">Image Unavailable</span>
+                        </div>
+                     )}
+                     {/* Gradient overlay */}
+                     <div className="absolute inset-0 bg-gradient-to-t from-black-deep via-[#111111]/80 to-transparent z-10" />
+                  </div>
 
-                {/* CONTENT SECTION - 50% width on Desktop */}
-                <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center bg-[#0a0a0a] relative">
-                    
-                    {/* Date */}
-                    <div className="mb-4">
-                        <span className="inline-block text-gold font-body text-[10px] uppercase tracking-[2px]">
-                            {new Date(event.event_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                        </span>
-                    </div>
+                  {/* Content Overlay */}
+                  <div className="relative z-20 flex flex-col justify-end h-full p-8 md:p-10">
+                      
+                      {/* Date */}
+                      <div className="mb-2">
+                          <span className="inline-block text-gold font-body text-[10px] uppercase tracking-[2px]">
+                              {event.is_month_only 
+                                ? new Date(event.event_date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+                                : new Date(event.event_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+                              }
+                          </span>
+                      </div>
 
-                    {/* Title */}
-                    <h3 className="font-display text-2xl md:text-3xl text-off-white mb-3 group-hover:text-gold transition-colors duration-300">
-                        {event.title}
-                    </h3>
-                    
-                    {/* Category / Type */}
-                     {event.category && (
-                        <span className="text-[9px] text-[rgba(255,255,255,0.4)] tracking-[1.5px] uppercase mb-5 block">
+                      {/* Title */}
+                      <h3 className="font-display text-2xl md:text-3xl text-off-white mb-2 drop-shadow-md group-hover:text-gold transition-colors duration-300">
+                          {event.title}
+                      </h3>
+                      
+                      {/* Category */}
+                      {event.category && (
+                        <span className="text-[9px] text-[rgba(245,240,232,0.8)] tracking-[1.5px] uppercase mb-4 block drop-shadow-md">
                              {event.category}
                         </span>
-                     )}
+                      )}
 
-                    {/* Excerpt / Description */}
-                    <p className="font-body text-[12px] text-off-white-dim leading-[1.8] mb-6 line-clamp-3">
-                        {event.description}
-                    </p>
-                  
-                    {/* Metadata: Location */}
-                    <div className="mb-8 font-body text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-wider border-t border-[rgba(255,255,255,0.1)] pt-4">
-                        <div className="flex items-center gap-2">
-                             <span className="text-gold">📍</span> 
-                             <span className="truncate">{event.location}</span>
-                        </div>
-                    </div>
+                      {/* Description */}
+                      <p className="font-body text-[12px] text-[rgba(245,240,232,0.8)] leading-[1.8] mb-6 line-clamp-2 drop-shadow-md">
+                          {event.description}
+                      </p>
+                    
+                      <div className="flex items-center gap-2 mb-8 font-body text-[10px] text-[rgba(245,240,232,0.8)] uppercase tracking-wider border-t border-[rgba(255,255,255,0.1)] pt-4 w-full">
+                           <span className="text-gold">📍</span> 
+                           <span className="truncate">{event.location}</span>
+                      </div>
 
-                    {/* Link / CTA */}
-                    <div className="mt-auto">
-                        <Link href="/contact" className="inline-block text-gold font-body text-[10px] uppercase tracking-[2px] border-b border-gold pb-1 hover:text-white hover:border-white transition-all duration-300">
-                            More Details
-                        </Link>
-                    </div>
-                </div>
+                      {/* Link */}
+                      <div className="mt-auto">
+                          <Link href="/contact" className="inline-block text-gold font-body text-[10px] uppercase tracking-[2px] border-b border-gold pb-1 hover:text-white hover:border-white transition-all duration-300">
+                              More Details
+                          </Link>
+                      </div>
+                  </div>
               </motion.div>
             ))}
           </div>

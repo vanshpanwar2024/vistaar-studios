@@ -98,17 +98,28 @@ export default function AdminDashboard() {
     setFormStatus({ type: "", message: "" });
 
     try {
+      // Create a clean object for submission
+      const dataToSubmit = { ...formData };
+      
+      // Remove empty strings for numeric/date fields to avoid type errors in Supabase
+      if (!dataToSubmit.preliminary_fee) delete dataToSubmit.preliminary_fee;
+      if (!dataToSubmit.finale_fee) delete dataToSubmit.finale_fee;
+      if (!dataToSubmit.max_participants) delete dataToSubmit.max_participants;
+      if (!dataToSubmit.registration_deadline) delete dataToSubmit.registration_deadline;
+      
+      console.log("Submitting data:", dataToSubmit); // Debug log
+
       if (editingId) {
         const { error } = await supabase
           .from('events')
-          .update(formData)
+          .update(dataToSubmit)
           .eq('id', editingId);
         if (error) throw error;
         setFormStatus({ type: "success", message: "Event updated successfully." });
       } else {
         const { error } = await supabase
           .from('events')
-          .insert([formData]);
+          .insert([dataToSubmit]);
         if (error) throw error;
         setFormStatus({ type: "success", message: "Event published successfully. It is now live on the Events page." });
       }
@@ -125,7 +136,7 @@ export default function AdminDashboard() {
       setTimeout(() => setFormStatus({ type: "", message: "" }), 5000);
     } catch (error) {
       console.error("Error saving event:", error);
-      setFormStatus({ type: "error", message: "Failed to save event. Please check the data." });
+      setFormStatus({ type: "error", message: `Failed to save event: ${error.message}` });
     }
   };
 
