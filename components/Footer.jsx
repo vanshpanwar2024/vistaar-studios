@@ -28,12 +28,7 @@ export default function Footer() {
                 />
               </div>
             </Link>
-            <p className="font-body text-[11px] text-off-white-dim italic mt-[16px]">
-              Where Talent Meets Stage.
-            </p>
-            <span className="font-body text-[8px] text-gold tracking-[3px] uppercase mt-[12px]">
-              EST. 2026 — DELHI NCR
-            </span>
+            
           </div>
 
           {/* Center Column — Navigation */}
@@ -107,7 +102,7 @@ export default function Footer() {
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
                 </svg>
               </a>
-              <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener noreferrer" className="text-gold opacity-60 hover:opacity-100 transition-opacity duration-300">
+              <a href="https://wa.me/918800125054" target="_blank" rel="noopener noreferrer" className="text-gold opacity-60 hover:opacity-100 transition-opacity duration-300">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px]">
                   <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                 </svg>
